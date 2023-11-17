@@ -2,7 +2,7 @@ import {connect} from "@/dbConfig/dbConfig";
 import User from "@/models/userModel";
 import {NextRequest, NextResponse} from "next/server";
 import bcryptjs from "bcryptjs";
-
+import jwt from 'jsonwebtoken';
 connect();
 
 export async function POST(request: NextRequest){
@@ -28,6 +28,26 @@ export async function POST(request: NextRequest){
         }        
 
         //create token data
+        const tokenData = {
+            id:user._id,
+            username:user.username,
+            email:user.email
+        } 
+
+        //create token, the exclamation mark after SECRET_TOKEN indicates that it is required
+        const token = await jwt.sign(tokenData, process.env.SECRET_TOKEN!, {expiresIn:"1d"});
+        //set token to user's cookies
+        const response = NextResponse.json({
+            message:"Login successful",
+            success:true,
+            token
+        })
+        response.cookies.set("token", token, 
+            {httpOnly:true,
+            
+            });
+        return response;
+
     } catch (error:any){
         return NextResponse.json({error:error.message},
             {status:500}
