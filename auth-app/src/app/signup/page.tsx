@@ -60,7 +60,7 @@ export default function SignupPage() {
             <button
                 className="p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-white text-2xl"
                 onClick={onSignup}
-            >{buttonDisabled ? "You already registered" : "Signup"}
+            >{buttonDisabled ? "Incomplete form" : "Signup"}
             </button>
             <Link href="/login" className="text-white">Visit login page</Link>
         </div>
